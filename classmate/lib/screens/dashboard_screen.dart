@@ -190,7 +190,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             hour: hour,
             minute: minute,
           );
-          onDataChanged?.call();
+          widget.onDataChanged?.call();
           if (mounted) setState(() {});
         },
       ),
