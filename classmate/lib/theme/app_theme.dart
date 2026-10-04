@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static const bg = Color(0xFF07101F);
@@ -13,7 +12,7 @@ class AppTheme {
 
   static ThemeData dark() {
     final base = ThemeData.dark(useMaterial3: true);
-    final text = GoogleFonts.estedadTextTheme(base.textTheme);
+    final text = base.textTheme;
 
     return base.copyWith(
       scaffoldBackgroundColor: bg,
