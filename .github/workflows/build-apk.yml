@@ -29,27 +29,18 @@ jobs:
         run: flutter create . --platforms=android
 
       - name: Configure Android desugaring
+        shell: bash
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          p = Path("android/app/build.gradle.kts")
-          s = p.read_text()
-          s = s.replace(
-              "android {",
-              """android {
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-    }""",
-              1,
-          )
-          s = s.replace(
-              "dependencies {",
-              """dependencies {
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")""",
-              1,
-          )
-          p.write_text(s)
-          PY
+          if [ -f android/app/build.gradle.kts ]; then
+            sed -i '/^android {/a\    compileOptions {\n        isCoreLibraryDesugaringEnabled = true\n    }' android/app/build.gradle.kts
+            sed -i '/^dependencies {/a\    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")' android/app/build.gradle.kts
+          elif [ -f android/app/build.gradle ]; then
+            sed -i '/^android {/a\    compileOptions {\n        coreLibraryDesugaringEnabled true\n    }' android/app/build.gradle
+            sed -i '/^dependencies {/a\    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.5"' android/app/build.gradle
+          else
+            echo "Android app Gradle file not found"
+            exit 1
+          fi
 
       - name: Remove generated sample test
         run: rm -rf test
