@@ -28,6 +28,29 @@ jobs:
       - name: Generate Android platform
         run: flutter create . --platforms=android
 
+      - name: Configure Android desugaring
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("android/app/build.gradle.kts")
+          s = p.read_text()
+          s = s.replace(
+              "android {",
+              """android {
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }""",
+              1,
+          )
+          s = s.replace(
+              "dependencies {",
+              """dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")""",
+              1,
+          )
+          p.write_text(s)
+          PY
+
       - name: Remove generated sample test
         run: rm -rf test
 
