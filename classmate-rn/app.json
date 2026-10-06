@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "ClassMate",
+    "slug": "classmate",
+    "version": "0.2.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "android": {
+      "package": "com.classmate.app"
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static"
+    }
+  }
+}
